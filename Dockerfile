@@ -8,7 +8,7 @@ RUN apt-get update && \
     # Install all apps
     # The third line is for multi-site config (ping is for testing later)
     apt-get install -y \
-        pkg-config \
+        pkg-config curl \
         attr acl samba smbclient ldap-utils winbind libnss-winbind libpam-winbind krb5-user krb5-kdc supervisor \
         openvpn inetutils-ping && \
     rm -rf /var/cache/apt /var/lib/apt/lists

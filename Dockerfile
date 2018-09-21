@@ -10,7 +10,7 @@ RUN apt-get update && \
     apt-get install -y \
         pkg-config \
         attr acl samba smbclient ldap-utils winbind libnss-winbind libpam-winbind krb5-user krb5-kdc supervisor \
-        openvpn inetutils-ping \
+        openvpn inetutils-ping && \
     rm -rf /var/cache/apt /var/lib/apt/lists
 
 RUN curl -s -S -L -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \

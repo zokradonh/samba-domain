@@ -102,7 +102,7 @@ appSetup () {
 }
 
 appStart () {
-	/usr/bin/supervisord
+	exec /usr/bin/supervisord
 }
 
 case "$1" in

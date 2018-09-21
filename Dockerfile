@@ -3,15 +3,23 @@ MAINTAINER Fmstrat <fmstrat@NOSPAM.NO>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    # Install all apps
+    # The third line is for multi-site config (ping is for testing later)
+    apt-get install -y \
+        pkg-config \
+        attr acl samba smbclient ldap-utils winbind libnss-winbind libpam-winbind krb5-user krb5-kdc supervisor \
+        openvpn inetutils-ping \
+    rm -rf /var/cache/apt /var/lib/apt/lists
 
-# Install all apps
-# The third line is for multi-site config (ping is for testing later)
-RUN apt-get install -y pkg-config
-RUN apt-get install -y attr acl samba smbclient ldap-utils winbind libnss-winbind libpam-winbind krb5-user krb5-kdc supervisor
-RUN apt-get install -y openvpn inetutils-ping
+RUN curl -s -S -L -o /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \
+    chmod a+x /usr/local/bin/dumb-init
 
 # Set up script and run
-ADD init.sh /init.sh
+COPY init.sh /init.sh
 RUN chmod 755 /init.sh
-CMD /init.sh setup
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+
+CMD [ "/init.sh", "setup" ]

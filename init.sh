@@ -7,6 +7,7 @@ appSetup () {
 	# Set variables
 	DOMAIN=${DOMAIN:-SAMDOM.LOCAL}
 	DOMAINPASS=${DOMAINPASS:-youshouldsetapassword}
+	DOMAINUSER=${DOMAINUSER:-administrator}
 	JOIN=${JOIN:-false}
 	JOINSITE=${JOINSITE:-NONE}
 	MULTISITE=${MULTISITE:-false}
@@ -45,9 +46,9 @@ appSetup () {
 		mv /etc/samba/smb.conf /etc/samba/smb.conf.orig
 		if [[ ${JOIN,,} == "true" ]]; then
 			if [[ ${JOINSITE} == "NONE" ]]; then
-				samba-tool domain join ${LDOMAIN} DC -U"${URDOMAIN}\administrator" --password="${DOMAINPASS}" --dns-backend=SAMBA_INTERNAL
+				samba-tool domain join ${LDOMAIN} DC -U"${URDOMAIN}\\${DOMAINUSER}" --password="${DOMAINPASS}" --dns-backend=SAMBA_INTERNAL
 			else
-				samba-tool domain join ${LDOMAIN} DC -U"${URDOMAIN}\administrator" --password="${DOMAINPASS}" --dns-backend=SAMBA_INTERNAL --site=${JOINSITE}
+				samba-tool domain join ${LDOMAIN} DC -U"${URDOMAIN}\\${DOMAINUSER}" --password="${DOMAINPASS}" --dns-backend=SAMBA_INTERNAL --site=${JOINSITE}
 			fi
 		else
 			samba-tool domain provision --use-rfc2307 --domain=${URDOMAIN} --realm=${UDOMAIN} --server-role=dc --dns-backend=SAMBA_INTERNAL --adminpass=${DOMAINPASS} ${HOSTIP_OPTION}
